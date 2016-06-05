@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Course-Hunter</title>
+</head>
+<body>
+	<form action="" method="post" name="crnform">
+	{{ form.hidden_tag() }}
+		<p>Department: 
+		{{ form.department }} </br>
+            {% for error in form.department.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+		Number: 
+		{{ form.number }} </br>
+            {% for error in form.number.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+		CRN: 
+		{{ form.crn }} </br>
+            {% for error in form.crn.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+		</p>
+		<p>
+			<input type="submit" value = "Check!">
+		</p>
+	</form>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        Your class is 
+        {% if message == "open" %}
+        <font color="Green">{{ message }}</font>
+        {% else %}
+        <font color="Red">{{ message }}</font>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</body>
+</html>
