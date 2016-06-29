@@ -1,43 +1,58 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Course-Hunter</title>
-</head>
-<body>
-	<form action="" method="post" name="crnform">
-	{{ form.hidden_tag() }}
-		<p>Department: 
-		{{ form.department }} </br>
-            {% for error in form.department.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-		Number: 
-		{{ form.number }} </br>
-            {% for error in form.number.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-		CRN: 
-		{{ form.crn }} </br>
-            {% for error in form.crn.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-		</p>
-		<p>
-			<input type="submit" value = "Check!">
-		</p>
-	</form>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-        Your class is 
-        {% if message == "open" %}
-        <font color="Green">{{ message }}</font>
-        {% else %}
-        <font color="Red">{{ message }}</font>
-        {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-</body>
+<html lang="en">
+    <head>
+        <title>Wayne's Course Hunter</title>
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/static/css/chosen.min.css" rel="stylesheet" type="text/css" />
+        <link rel="icon" type="image/png" href="/static/images/favicon.png" />
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/dropdown.js"></script>
+        <script type="text/javascript" src="/static/js/chosen.jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="well">
+            <h1>Wayne's Course Checker</h1>
+            <hr>
+            <form class="form" action="result" method="post" name="crnform">
+                {{ form.hidden_tag() }}
+                <div class="form-group{% if form.department.errors %} has-error{% endif %}">
+                    <label for="department" class="control-label">Department:</label>
+                    <select name="department" id="department">
+                    </select>
+                </div>
+                <div class="form-group{% if form.number.errors %} has-error{% endif %}">
+                    <label for="course" class="control-label">Course:</label>
+                    <select name="course" id="course">
+                    </select>
+                </div>
+                <div class="form-group{% if form.crn.errors %} has-error{% endif %}">
+                    <label for="crn" class="control-label">CRN:</label>
+                    <select name ="crn" id="crn">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Check">
+                    </div>
+                </div>
+            </form>
+            <hr>
+            Made by Wayne Crasta :)
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            {% if message == "open" %}
+            <span class="text-success">Your class is {{ message }}</span>.
+            {% else %}
+            <span class="text-danger">Your class is {{ message }}</span>.
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </body>
 </html>
+
