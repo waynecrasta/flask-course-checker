@@ -18,4 +18,4 @@ def index():
 def result():
     f = request.form
     avail = check_open(f['department'], f['course'], f['crn'])
-    return render_template('result.html', avail=avail, section=f['crn'])
+    return render_template('result.html', avail=avail, section=f['crn'], dept=f['department'], number=f['course'])
