@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>{{dept}} {{number}}</h1>
-    <hr>
-    Your section is
-    {% if avail=='open' %}
-    <font color="green">open :)</font>
-    {% else %}
-    <font color="red">closed :( </font>
-    {% endif %}
-    </br>
-    </br>
-    <div class="panel panel-default">
-        <div class="panel-heading">Copy CRN</div>
-        <div class="panel-body">
+<h1>{{dept}} {{number}}</h1>
+<hr>
+Your section is
+{% if avail=='open' %}
+<font color="green">open :)</font>
+{% else %}
+<font color="red">closed :( </font>
+{% endif %}
+</br>
+</br>
+<div class="panel panel-default">
+    <div class="panel-heading">Copy CRN</div>
+    <div class="panel-body">
         <input id="clip" value="{{section}}">
         <button class="btn" data-clipboard-target="#clip">
             <img src="static/images/clippy.svg" alt="Copy to clipboard" width="13">
         </button>
-        </div>
     </div>
-    <hr>
-    <a href="https://eas.admin.uillinois.edu/eas/servlet/EasLogin?redirect=https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&#38;dad=BANPROD1">Sign Up!</a> •
-    <a href="/">Go Home</a>
+</div>
+<hr>
+<a href="https://eas.admin.uillinois.edu/eas/servlet/EasLogin?redirect=https://webprod.admin.uillinois.edu/ssa/servlet/SelfServiceLogin?appName=edu.uillinois.aits.SelfServiceLogin&#38;dad=BANPROD1">Sign
+    Up!</a> •
+<a href="/">Go Home</a>
 
 {% endblock %}

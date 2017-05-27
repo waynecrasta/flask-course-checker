@@ -1,32 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-            <h1>Wayne's Course Checker</h1>
-            <hr>
-            <form class="form" action="result" method="post" name="crnform">
-                {{ form.hidden_tag() }}
-                <div class="form-group{% if form.department.errors %} has-error{% endif %}">
-                    <label for="department" class="control-label">Department:</label>
-                    <select name="department" id="department">
-                    </select>
-                </div>
-                <div class="form-group{% if form.number.errors %} has-error{% endif %}">
-                    <label for="course" class="control-label">Course:</label>
-                    <select name="course" id="course">
-                    </select>
-                </div>
-                <div class="form-group{% if form.crn.errors %} has-error{% endif %}">
-                    <label for="crn" class="control-label">CRN:</label>
-                    <select name ="crn" id="crn">
-                    </select>
-                </div>
-                <div class="form-group">
-                    <div class="controls">
-                        <input class="btn btn-primary" type="submit" value="Check">
-                    </div>
-                </div>
-            </form>
-            <hr>
-            Made by Wayne Crasta :)
+
+<form class="form" action="result" method="post" name="crnform">
+    {{ form.hidden_tag() }}
+    <div class="form-group{% if form.department.errors %} has-error{% endif %}">
+        <label for="department" class="control-label">Department:</label>
+        <select name="department" id="department">
+        </select>
+    </div>
+    <div class="form-group{% if form.number.errors %} has-error{% endif %}">
+        <label for="course" class="control-label">Course:</label>
+        <select name="course" id="course">
+        </select>
+    </div>
+    <div class="form-group{% if form.crn.errors %} has-error{% endif %}">
+        <label for="crn" class="control-label">CRN:</label>
+        <select name="crn" id="crn">
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="controls">
+            <input class="btn btn-primary" type="submit" value="Check">
         </div>
+    </div>
+    <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
+</form>
+<hr>
+Made with &hearts; by <a href="http://waynecrasta.com">Wayne Crasta</a>
 {% endblock %}
 

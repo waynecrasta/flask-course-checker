@@ -1,10 +1,22 @@
-from flask_wtf import Form
-from wtforms import IntegerField, SelectField
-from wtforms.validators import DataRequired
+from flask_wtf import FlaskForm
+from wtforms import IntegerField, SelectField, StringField, PasswordField
+from wtforms.validators import InputRequired, Length, Email
 from .course_checker import return_subjects
 
 
-class CourseForm(Form):
-    department = SelectField('department', choices=return_subjects(), validators=[DataRequired()])
-    number = IntegerField('number', validators=[DataRequired()])
-    crn = IntegerField('crn', validators=[DataRequired()])
+class CourseForm(FlaskForm):
+    department = SelectField('department', choices=return_subjects(), validators=[InputRequired()])
+    number = IntegerField('number', validators=[InputRequired()])
+    crn = IntegerField('crn', validators=[InputRequired()])
+
+
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired()], render_kw={"placeholder": "username"})
+    password = PasswordField('password', validators=[InputRequired()], render_kw={"placeholder": "password"})
+
+
+class RegisterForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired(), Email(message="Invalid Email")],
+                        render_kw={"placeholder": "email"})
+    username = StringField('username', validators=[InputRequired()], render_kw={"placeholder": "username"})
+    password = PasswordField('password', validators=[InputRequired()], render_kw={"placeholder": "password"})

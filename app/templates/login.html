@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/static/css/login.css" type="text/css">
+{% block body %}
+
+<form action="/login" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="login">
+        <div class="login-screen">
+            <div class="app-title">
+                <h1>Login</h1>
+            </div>
+            {% if wrong_login %}
+            <p style="color:red; text-align: center">Login is incorrect</p>
+            {% endif %}
+            <div class="login-form">
+                <div class="control-group">
+                    {{ form.username }}
+                </div>
+
+                <div class="control-group">
+                    {{ form.password }}
+                </div>
+
+                <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
+                <br>
+                <a href="{{url_for('index')}}">Home</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
