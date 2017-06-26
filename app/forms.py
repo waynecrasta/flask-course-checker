@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SelectField, StringField, PasswordField
-from wtforms.validators import InputRequired, Length, Email
+from wtforms.validators import InputRequired
 from .course_checker import return_subjects
 
 
@@ -16,7 +16,8 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Email(message="Invalid Email")],
-                        render_kw={"placeholder": "email"})
+    phone_number = StringField('phone number', validators=[InputRequired()],
+                               render_kw={"placeholder": "phone number"})
+    carrier = SelectField('Carrier', choices=[('verizon','Verizon'), ('att', 'AT&T'), ('sprint', 'Sprint'), ('tmobile', 'T-Mobile')])
     username = StringField('username', validators=[InputRequired()], render_kw={"placeholder": "username"})
     password = PasswordField('password', validators=[InputRequired()], render_kw={"placeholder": "password"})

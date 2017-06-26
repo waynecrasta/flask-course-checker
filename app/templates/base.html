@@ -35,11 +35,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home <span class="sr-only">(current)</span></a></li>
-                    {% if not current_user.username %}
+                    {% if not current_user.is_authenticated %}
                     <li><a href="{{url_for('register')}}">Register</a></li>
                     <li><a href="{{url_for('login')}}">Login</a></li>
                     {% else %}
                     <li><p class="navbar-text">Hi <b>{{current_user.username}}</b></p></li>
+                    <li><a href="{{url_for('add_class')}}">Add Class</a></li>
                     {% endif %}
                 </ul>
                 {% if current_user.username %}

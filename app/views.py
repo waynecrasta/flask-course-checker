@@ -1,10 +1,10 @@
-from flask import render_template, flash, request, redirect, url_for
+from flask import render_template, request, redirect, url_for
 from app import app
 from .forms import CourseForm, RegisterForm, LoginForm
 from .course_checker import check_open
-from .tables import User, db
+from .tables import User, Subscription, db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -17,21 +17,19 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    form = CourseForm()
-    if form.validate_on_submit():
-        avail = check_open(form.department.data, form.number.data, form.crn.data)
-        flash(avail)
-        # flash(return_crn(form.department.data, form.number.data))
-    return render_template('course.html', form=form)
-
-
-@app.route('/result', methods=['POST'])
-def result():
-    f = request.form
-    avail = check_open(f['department'], f['course'], f['crn'])
-    return render_template('result.html', avail=avail, section=f['crn'], dept=f['department'], number=f['course'])
+    if (current_user.is_authenticated):
+        phone_number = current_user.phone_number
+        courses = []
+        if Subscription.query.filter_by(user_id=current_user.id).first():
+            results = Subscription.query.filter_by(user_id=current_user.id).all()
+            courses = [
+                {'department': result.department, 'course': result.course, 'crn': result.crn, 'open': result.available}
+                for result in
+                results]
+        return render_template('home.html', courses=courses)
+    return render_template('home.html')
 
 
 @app.route('/login', methods=('GET', 'POST'))
@@ -61,17 +59,18 @@ def logout():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        email = form.email.data
+        phone_number = form.phone_number.data
+        carrier = form.carrier.data
         username = form.username.data
         password = generate_password_hash(form.password.data)
-        if User.query.filter_by(email=email).first():
-            form.email.errors.append('This email has already been registered.')
+        if User.query.filter_by(phone_number=phone_number).first():
+            form.phone_number.errors.append('This phone number has already been registered.')
             return render_template('register.html', form=form)
         if User.query.filter_by(username=username).first():
             form.username.errors.append('This username has already been registered.')
             return render_template('register.html', form=form)
         try:
-            db.session.add(User(email, username, password))
+            db.session.add(User(phone_number, carrier, username, password))
             db.session.commit()
             user = User.query.filter_by(username=username).first()
             login_user(user)
@@ -80,3 +79,29 @@ def register():
         return redirect(url_for('index'))
     else:
         return render_template('register.html', form=form)
+
+
+@app.route('/add_class', methods=['GET', 'POST'])
+@login_required
+def add_class():
+    form = CourseForm()
+    if request.method == 'POST':
+        f = request.form
+        try:
+            available = check_open(f['department'], f['course'], f['crn'])
+            db.session.add(Subscription(current_user.id, f['department'], f['course'], f['crn'], available))
+            db.session.commit()
+        except:
+            return render_template('add_class.html', form=form, f=f, error=True)
+        return redirect(url_for('index'))
+    return render_template('add_class.html', form=form, f=None, error=False)
+
+
+@app.route('/delete_class/<crn>')
+@login_required
+def delete_class(crn):
+    course = Subscription.query.filter_by(user_id=current_user.id, crn=crn).first()
+    if course:
+        db.session.delete(course)
+        db.session.commit()
+    return redirect(url_for('index'))

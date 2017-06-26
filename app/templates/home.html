@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Department</th>
+            <th>Course</th>
+            <th>CRN</th>
+            <th>Open?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if courses|length > 0 %}
+            {% for course in courses %}
+                <tr>
+                    <td>{{ course['department'] }}</td>
+                    <td>{{ course['course'] }} </td>
+                    <td>{{ course['crn'] }}</td>
+                    <td>
+                        {% if course['open'] == 'open' %}
+                        <img title="Open" src="static/images/open.png" style="width:20px;height:20px;">
+                        {% elif course['open'] == 'closed'%}
+                        <img title="Closed" src="static/images/closed.png" style="width:20px;height:20px;">
+                        {% else %}
+                        <img title="Unknown" src="static/images/unknown.png" style="width:20px;height:20px;">
+                        {% endif %}
+                    </td>
+                    <td><a href="{{url_for('delete_class',crn=course['crn'])}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+        <tr><td><a href="{{url_for('add_class')}}">Add</a> a class</td><td></td><td><td></td><td></td></tr>
+        {% endif %}
+    </tbody>
+</table>
+{% else %}
+Please <a href="{{url_for('register')}}">Register</a> or <a href="{{url_for('login')}}">Log In</a> to view your classes.
+{%endif%}
+{% include 'footer.html' %}
+{% endblock %}

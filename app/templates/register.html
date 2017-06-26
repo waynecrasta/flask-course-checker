@@ -11,9 +11,16 @@
             </div>
             <div class="login-form">
                 <div class="control-group">
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                    <p style="color:red">{{ form.email.errors[0]}}</p>
+                    {{ form.phone_number }}
+                    {% if form.phone_number.errors %}
+                    <p style="color:red">{{ form.phone_number.errors[0]}}</p>
+                    {% endif %}
+                </div>
+
+                <div class="control-group">
+                    Carrier: {{ form.carrier }}
+                    {% if form.phone_number.errors %}
+                    <p style="color:red">{{ form.phone_number.errors[0]}}</p>
                     {% endif %}
                 </div>
 
@@ -32,6 +39,8 @@
                 </div>
 
                 <input type="submit" value="Register" class="btn btn-primary btn-large btn-block">
+                <br>
+                Note: Passwords are encrypted
                 <br>
                 <a href="{{url_for('index')}}">Home</a>
             </div>

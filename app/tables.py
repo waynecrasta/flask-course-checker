@@ -13,12 +13,14 @@ login_manager.init_app(app)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True)
+    phone_number = db.Column(db.String(120))
+    carrier = db.Column(db.String(120))
     username = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
 
-    def __init__(self, email, username, password):
-        self.email = email
+    def __init__(self, phone_number, carrier, username, password):
+        self.phone_number = phone_number
+        self.carrier = carrier
         self.username = username
         self.password = password
 
@@ -26,6 +28,26 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
+class Subscription(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    department = db.Column(db.String(120))
+    course = db.Column(db.String(120))
+    crn = db.Column(db.String(120))
+    available = db.Column(db.String(120))
+
+    def __init__(self, user_id, department, course, crn, available):
+        self.user_id = user_id
+        self.department = department
+        self.course = course
+        self.crn = crn
+        self.available = available
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+if __name__ == '__main__':
+    db.drop_all()
+    db.create_all()
